@@ -1,0 +1,41 @@
+{
+    "name": "connectiv/thai_tax",
+    "description": "Thai tax calculation",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anurat Chapanond",
+            "email": "anurat@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Connectiv\\ThaiTax\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Connectiv\\ThaiTax\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Connectiv\\ThaiTax\\ThaiTaxServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider"
+            ],
+            "aliases": {
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel",
+                "ThaiTax": "Connectiv\\ThaiTax\\Facades\\ThaiTax"
+            }
+        }
+    },
+    "require": {
+    },
+    "require-dev": {
+        "orchestra/testbench": "6.0",
+        "phpunit/phpunit": "^9.5",
+        "maatwebsite/excel": "^3.1"
+    }
+}
