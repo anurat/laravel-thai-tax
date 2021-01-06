@@ -19,19 +19,7 @@ class TaxCalculation
 
     public function __construct()
     {
-    }
-
-    public function clear(): TaxCalculation
-    {
-        foreach ($this->incomes as &$income) {
-            $income = [];
-        }
-
-        foreach ($this->deductions as &$deduction) {
-            $deduction = [];
-        }
-
-        return $this;
+        $this->deductions['personal'][] = $this->PERSONAL_DEDUCTION;
     }
 
     public function thaiYear(int $thaiYear): TaxCalculation
@@ -80,13 +68,31 @@ class TaxCalculation
         $table = TaxTable::tableFromYear($this->thaiYear);
         $netIncome = $this->netIncome;
 
-        return $table->reduce(function ($sum, $row) use ($netIncome) {
+        $tax = $table->reduce(function ($sum, $row) use ($netIncome) {
             if ($row['min'] > $netIncome) {
                 return $sum;
             }
 
             return $sum + $this->rowTax($netIncome, $row);
         }, 0);
+
+        return $tax;
+    }
+
+    public function clearData(): TaxCalculation
+    {
+        foreach ($this->incomes as &$income) {
+            $income = [];
+        }
+
+        foreach ($this->deductions as &$deduction) {
+            $deduction = [];
+        }
+
+        $this->thaiYear = null;
+        $this->netIncome = null;
+
+        return $this;
     }
 
     protected function rowTax(float $netIncome, array $row): float
@@ -94,5 +100,10 @@ class TaxCalculation
         $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
 
         return ($minOfMax - $row['min'] + 1) * $row['percentage'] / 100;
+    }
+
+    public function import()
+    {
+        \Maatwebsite\Excel\Facades\Excel::import(new \Connectiv\ThaiTax\Imports\TaxImport(), 'src/Tables/2560.csv');
     }
 }
