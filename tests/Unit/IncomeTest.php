@@ -22,20 +22,20 @@ class IncomeTest extends TestCase
         $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000);
 
-        $this->assertEquals(17500, $thaiTax->incomeTax());
+        $this->assertEquals(11500, $thaiTax->incomeTax());
     }
 
     public function testAddLowIncome()
     {
         $tax = ThaiTax::thaiYear(2564)
-            ->income(250000)
+            ->income(310000)
             ->incomeTax();
 
         $this->assertEquals(0, $tax);
 
         ThaiTax::clearData();
         $tax = ThaiTax::thaiYear(2564)
-            ->income(260000)
+            ->income(320000)
             ->incomeTax();
 
         $this->assertEquals(500, $tax);
@@ -44,20 +44,20 @@ class IncomeTest extends TestCase
     public function testAddMultipleIncomes()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
-            ->income(200000)
+            ->income(250000)
             ->income(50000)
-            ->income(3000);
+            ->income(15000);
 
-        $this->assertEquals(150, $thaiTax->incomeTax());
+        $this->assertEquals(250, $thaiTax->incomeTax());
     }
 
     public function testAddDifferentTypesOfIncomes()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
             ->income(100000)
-            ->salary(500000)
+            ->salary(50000)
             ->bonus(50000);
 
-        $this->assertEquals(35000, $thaiTax->incomeTax());
+        $this->assertEquals(41000, $thaiTax->incomeTax());
     }
 }

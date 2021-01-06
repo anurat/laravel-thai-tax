@@ -19,7 +19,6 @@ class TaxCalculation
 
     public function __construct()
     {
-        $this->deductions['personal'][] = $this->PERSONAL_DEDUCTION;
     }
 
     public function thaiYear(int $thaiYear): TaxCalculation
@@ -44,23 +43,24 @@ class TaxCalculation
         return $this;
     }
 
-    protected function calculateNetIncome()
+    protected function calculateNetIncome(): void
     {
-        $incomes = collect($this->incomes)->reduce(function ($sum, $income) {
-            return $sum + collect($income)->sum();
-        }, 0);
+        $incomeSum = $this->incomeSum();
 
-        $expenses = min(self::MAX_EXPENSES, $incomes * 50 / 100);
+        $expenses = min(self::MAX_EXPENSES, $incomeSum * 50 / 100);
 
-        $deductions = collect($this->deductions)->reduce(function ($sum, $deduction) {
-            return $sum + collect($deduction)->sum();
-        }, 0);
+        $this->addPersonalDeduction();
+        $deductionSum = $this->deductionSum();
 
-        $this->netIncome = $incomes - $expenses - $deductions;
+        $this->netIncome = $incomeSum - $expenses - $deductionSum;
     }
 
     public function incomeTax(): float
     {
+        if (!$this->emptyIncomesAndDeductions()) {
+            $this->calculateNetIncome();
+        }
+
         if (!$this->thaiYear || is_null($this->netIncome)) {
             throw new Exception('Thai year or net income are not specified.');
         }
@@ -68,15 +68,35 @@ class TaxCalculation
         $table = TaxTable::tableFromYear($this->thaiYear);
         $netIncome = $this->netIncome;
 
-        $tax = $table->reduce(function ($sum, $row) use ($netIncome) {
+        return $table->sum(function ($row) use ($netIncome) {
             if ($row['min'] > $netIncome) {
-                return $sum;
+                return 0;
             }
 
-            return $sum + $this->rowTax($netIncome, $row);
-        }, 0);
+            return $this->rowTax($netIncome, $row);
+        });
+    }
 
-        return $tax;
+    public function emptyIncomesAndDeductions(): bool
+    {
+        $hasIncome = collect($this->incomes)
+            ->contains(function ($income) {
+                return count($income) > 0;
+            });
+
+        $hasDeduction = collect($this->deductions)
+            ->contains(function ($deduction) {
+                return count($deduction) > 0;
+            });
+
+        return !$hasIncome && !$hasDeduction;
+    }
+
+    protected function rowTax(float $netIncome, array $row): float
+    {
+        $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
+
+        return ($minOfMax - $row['min'] + 1) * $row['percentage'] / 100;
     }
 
     public function clearData(): TaxCalculation
@@ -93,13 +113,6 @@ class TaxCalculation
         $this->netIncome = null;
 
         return $this;
-    }
-
-    protected function rowTax(float $netIncome, array $row): float
-    {
-        $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
-
-        return ($minOfMax - $row['min'] + 1) * $row['percentage'] / 100;
     }
 
     public function import()

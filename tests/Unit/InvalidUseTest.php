@@ -38,7 +38,7 @@ class InvalidUseTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $tax = ThaiTax::thaiYear(2555)
+        $tax = ThaiTax::thaiYear(2535)
             ->netIncome(600000)
             ->incomeTax();
     }

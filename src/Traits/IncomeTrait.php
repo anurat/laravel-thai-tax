@@ -12,20 +12,24 @@ trait IncomeTrait
         'bonus' => [],
     ];
 
+    protected function incomeSum(): float
+    {
+        return collect($this->incomes)
+            ->sum(function ($income) {
+                return collect($income)->sum();
+            });
+    }
+
     public function income(float $income): TaxCalculation
     {
         $this->incomes['general'][] = $income;
 
-        $this->calculateNetIncome();
-
         return $this;
     }
 
-    public function salary(float $salary): TaxCalculation
+    public function salary(float $salaryPerMonth): TaxCalculation
     {
-        $this->incomes['salary'][] = $salary;
-
-        $this->calculateNetIncome();
+        $this->incomes['salary'][] = $salaryPerMonth * 12;
 
         return $this;
     }
@@ -33,8 +37,6 @@ trait IncomeTrait
     public function bonus(float $bonus): TaxCalculation
     {
         $this->incomes['bonus'][] = $bonus;
-
-        $this->calculateNetIncome();
 
         return $this;
     }

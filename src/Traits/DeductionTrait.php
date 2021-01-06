@@ -8,7 +8,7 @@ trait DeductionTrait
 {
     public static $PERSONAL_DEDUCTION = 60000;
     public static $SPOUSE_DEDUCTION = 60000;
-    public static $CHILD_DEDUCITON = 30000;
+    public static $CHILD_DEDUCTION = 30000;
     public static $PARENT_DEDUCTION = 30000;
     public static $MAX_NO_OF_PARENTS = 4;
     public static $MAX_INSURANCE_PREMIUM = 100000;
@@ -35,11 +35,17 @@ trait DeductionTrait
         'educationDonations' => [],
     ];
 
+    protected function deductionSum(): float
+    {
+        return collect($this->deductions)
+            ->sum(function ($deduction) {
+                return collect($deduction)->sum();
+            });
+    }
+
     public function deduction(float $deduction): TaxCalculation
     {
-        $this->deductions['general'] = $deduction;
-
-        $this->calculateNetIncome();
+        $this->deductions['general'][] = $deduction;
 
         return $this;
     }
@@ -47,48 +53,24 @@ trait DeductionTrait
     public function spouse(bool $hasSpouse): TaxCalculation
     {
         if ($hasSpouse && sizeof($this->deductions['spouse']) === 0) {
-            $this->deductions['spouse'][] = $this->SPOUSE_DEDUCTION;
+            $this->deductions['spouse'][] = self::$SPOUSE_DEDUCTION;
         }
-
-        $this->calculateNetIncome();
 
         return $this;
     }
 
     public function children(int $noOfChildren): TaxCalculation
     {
-        $this->deductions['children'][] = $noOfChildren * $this->CHILD_DEDUCTION;
-
-        $this->calculateNetIncome();
+        $this->deductions['children'][] = $noOfChildren * self::$CHILD_DEDUCTION;
 
         return $this;
     }
 
     public function parents(int $noOfParents): TaxCalculation
     {
-        if (sizeof($this->deductions['parents']) === 0) {
-            $this->deductions['parents'][] = min($noOfParents, $this->MAX_NO_OF_PARENTS) * $this->PARENT_DEDUCTION;
-        }
+        $parentsSum = collect($this->deductions['parents'])->sum();
 
-        $this->calculateNetIncome();
-
-        return $this;
-    }
-
-    public function homeLoanInterest(float $interest): TaxCalculation
-    {
-        $sum = collect($this->deductions['homeLoanInterest'])->sum();
-
-        if ($sum >= $this->MAX_HOME_LOAN_INTEREST) {
-            return $this;
-        }
-
-        $this->deductions['homeLoanInterest'][] = (
-            $sum + $interest >= $this->MAX_HOME_LOAN_INTEREST ?
-            $this->MAX_HOME_LOAN_INTEREST - $sum :
-            $interest);
-
-        $this->calculateNetIncome();
+        $this->deductions['parents'][] = min($noOfParents, self::$MAX_NO_OF_PARENTS) * self::$PARENT_DEDUCTION;
 
         return $this;
     }
@@ -97,18 +79,56 @@ trait DeductionTrait
     {
         $sum = collect($this->deductions['insurancePremium'])->sum();
 
-        if ($sum >= $this->MAX_INSURANCE_PREMIUM) {
+        if ($sum >= self::$MAX_INSURANCE_PREMIUM) {
             return $this;
         }
 
         $this->deductions['insurancePremium'][] = (
-            $sum + $premium >= $this->MAX_INSURANCE_PREMIUM ?
-            $this->MAX_INSURANCE_PREMIUM - $sum :
+            $sum + $premium >= self::$MAX_INSURANCE_PREMIUM ?
+            self::$MAX_INSURANCE_PREMIUM - $sum :
             $premium);
-
-        $this->calculateNetIncome();
 
         return $this;
     }
 
+    public function annuityInsurancePremium(float $premium): TaxCalculation
+    {
+        $premiumSum = collect($this->deductions['annuityInsurancePremium'])->sum();
+        $incomeSum = $this->incomeSum();
+        $minSum = min(self::$MAX_ANNUITY_INSURANCE_PREMIUM, $incomeSum * self::$ANNUITY_INSURANCE_PREMIUM_RATE);
+
+        if ($premiumSum >= $minSum) {
+            return $this;
+        }
+
+        $this->deductions['annuityInsurancePremium'][] = (
+            $premiumSum + $premium >= $minSum ?
+            $minSum - $premiumSum :
+            $premium);
+
+        return $this;
+    }
+
+    public function homeLoanInterest(float $interest): TaxCalculation
+    {
+        $sum = collect($this->deductions['homeLoanInterest'])->sum();
+
+        if ($sum >= self::$MAX_HOME_LOAN_INTEREST) {
+            return $this;
+        }
+
+        $this->deductions['homeLoanInterest'][] = (
+            $sum + $interest >= self::$MAX_HOME_LOAN_INTEREST ?
+            self::$MAX_HOME_LOAN_INTEREST - $sum :
+            $interest);
+
+        return $this;
+    }
+
+    protected function addPersonalDeduction(): void
+    {
+        if (sizeof($this->deductions['personal']) === 0) {
+            $this->deductions['personal'][] = self::$PERSONAL_DEDUCTION;
+        }
+    }
 }

@@ -32,10 +32,10 @@
         }
     },
     "require": {
-        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "orchestra/testbench": "6.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "maatwebsite/excel": "^3.1"
     }
 }

@@ -6,16 +6,17 @@ use Illuminate\Support\Collection;
 
 class TaxTable
 {
-    public const START_YEAR = 2556;
-    public const TAX2556_TABLE = 'src/Tables/2556.csv';
+    public const START_YEAR = 2542;
+    public const TAX2542_TABLE = 'src/Tables/2542.csv';
+    public const TAX2552_TABLE = 'src/Tables/2552.csv';
     public const TAX2560_TABLE = 'src/Tables/2560.csv';
 
     public static function tableFromYear(int $thaiYear): Collection
     {
-        $table = $thaiYear < 2560 ? self::TAX2556_TABLE : self::TAX2560_TABLE;
-        $content = file_get_contents($table);
+        $tableFilename = self::getTableFilename($thaiYear);
+        $table = file_get_contents($tableFilename);
 
-        return collect(explode("\r\n", $content))
+        return collect(explode("\r\n", $table))
             ->map(function ($row) {
                 $r = explode(",", $row);
 
@@ -26,5 +27,18 @@ class TaxTable
                 ];
             })
             ->slice(1);
+    }
+
+    protected static function getTableFilename(int $thaiYear): string
+    {
+        if ($thaiYear < 2552) {
+            return self::TAX2542_TABLE;
+        }
+
+        if ($thaiYear < 2560) {
+            return self::TAX2552_TABLE;
+        }
+
+        return self::TAX2560_TABLE;
     }
 }

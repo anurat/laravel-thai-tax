@@ -5,7 +5,7 @@ namespace Connectiv\ThaiTax\Tests\Unit;
 use Connectiv\ThaiTax\Facades\ThaiTax;
 use Connectiv\ThaiTax\Tests\TestCase;
 
-class ThaiYear2556Test extends TestCase
+class ThaiYear2552Test extends TestCase
 {
     public function setUp(): void
     {
@@ -17,9 +17,9 @@ class ThaiYear2556Test extends TestCase
         parent::tearDown();
     }
 
-    public function testYear2556()
+    public function testYear2552()
     {
-        $thaiTax = ThaiTax::thaiYear(2556);
+        $thaiTax = ThaiTax::thaiYear(2552);
 
         $this->assertEquals(0, $thaiTax->netIncome(0)->incomeTax());
         $this->assertEquals(0, $thaiTax->netIncome(150000)->incomeTax());
@@ -30,6 +30,50 @@ class ThaiYear2556Test extends TestCase
         $this->assertEquals(135000.3, $thaiTax->netIncome(1000001)->incomeTax());
         $this->assertEquals(1035000, $thaiTax->netIncome(4000000)->incomeTax());
         $this->assertEquals(1035000.37, $thaiTax->netIncome(4000001)->incomeTax());
+        $this->assertEquals(1405000, $thaiTax->netIncome(5000000)->incomeTax());
+    }
+
+    public function testYear2553()
+    {
+        $thaiTax = ThaiTax::thaiYear(2553);
+
+        $this->assertEquals(0, $thaiTax->netIncome(0)->incomeTax());
+        $this->assertEquals(35000, $thaiTax->netIncome(500000)->incomeTax());
+        $this->assertEquals(135000, $thaiTax->netIncome(1000000)->incomeTax());
+        $this->assertEquals(1035000, $thaiTax->netIncome(4000000)->incomeTax());
+        $this->assertEquals(1405000, $thaiTax->netIncome(5000000)->incomeTax());
+    }
+
+    public function testYear2554()
+    {
+        $thaiTax = ThaiTax::thaiYear(2554);
+
+        $this->assertEquals(0, $thaiTax->netIncome(0)->incomeTax());
+        $this->assertEquals(35000, $thaiTax->netIncome(500000)->incomeTax());
+        $this->assertEquals(135000, $thaiTax->netIncome(1000000)->incomeTax());
+        $this->assertEquals(1035000, $thaiTax->netIncome(4000000)->incomeTax());
+        $this->assertEquals(1405000, $thaiTax->netIncome(5000000)->incomeTax());
+    }
+
+    public function testYear2555()
+    {
+        $thaiTax = ThaiTax::thaiYear(2555);
+
+        $this->assertEquals(0, $thaiTax->netIncome(0)->incomeTax());
+        $this->assertEquals(35000, $thaiTax->netIncome(500000)->incomeTax());
+        $this->assertEquals(135000, $thaiTax->netIncome(1000000)->incomeTax());
+        $this->assertEquals(1035000, $thaiTax->netIncome(4000000)->incomeTax());
+        $this->assertEquals(1405000, $thaiTax->netIncome(5000000)->incomeTax());
+    }
+
+    public function testYear2556()
+    {
+        $thaiTax = ThaiTax::thaiYear(2556);
+
+        $this->assertEquals(0, $thaiTax->netIncome(0)->incomeTax());
+        $this->assertEquals(35000, $thaiTax->netIncome(500000)->incomeTax());
+        $this->assertEquals(135000, $thaiTax->netIncome(1000000)->incomeTax());
+        $this->assertEquals(1035000, $thaiTax->netIncome(4000000)->incomeTax());
         $this->assertEquals(1405000, $thaiTax->netIncome(5000000)->incomeTax());
     }
 
