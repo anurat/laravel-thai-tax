@@ -4,6 +4,7 @@ namespace Connectiv\ThaiTax;
 
 use Connectiv\ThaiTax\Tables\TaxTable;
 use Connectiv\ThaiTax\Traits\DeductionTrait;
+use Connectiv\ThaiTax\Traits\ExpenseTrait;
 use Connectiv\ThaiTax\Traits\IncomeTrait;
 use Exception;
 
@@ -11,8 +12,7 @@ class TaxCalculation
 {
     use IncomeTrait;
     use DeductionTrait;
-
-    public const MAX_EXPENSES = 100000;
+    use ExpenseTrait;
 
     private $thaiYear;
     private $netIncome;
@@ -45,24 +45,24 @@ class TaxCalculation
 
     protected function calculateNetIncome(): void
     {
+        $this->addPersonalDeduction();
         $incomeSum = $this->incomeSum();
 
-        $expenses = min(self::MAX_EXPENSES, $incomeSum * 50 / 100);
-
-        $this->addPersonalDeduction();
-        $deductionSum = $this->deductionSum();
-
-        $this->netIncome = $incomeSum - $expenses - $deductionSum;
+        $this->netIncome = $incomeSum - $this->expenses($incomeSum) - $this->deductionSum();
     }
 
     public function incomeTax(): float
     {
-        if (!$this->emptyIncomesAndDeductions()) {
+        if (!$this->thaiYear) {
+            $this->thaiYear = date('Y') + 543;
+        }
+
+        if ($this->hasIncome() || $this->hasDeduction()) {
             $this->calculateNetIncome();
         }
 
-        if (!$this->thaiYear || is_null($this->netIncome)) {
-            throw new Exception('Thai year or net income are not specified.');
+        if (is_null($this->netIncome)) {
+            throw new Exception('Net income are not specified.');
         }
 
         $table = TaxTable::tableFromYear($this->thaiYear);
@@ -77,21 +77,6 @@ class TaxCalculation
         });
     }
 
-    public function emptyIncomesAndDeductions(): bool
-    {
-        $hasIncome = collect($this->incomes)
-            ->contains(function ($income) {
-                return count($income) > 0;
-            });
-
-        $hasDeduction = collect($this->deductions)
-            ->contains(function ($deduction) {
-                return count($deduction) > 0;
-            });
-
-        return !$hasIncome && !$hasDeduction;
-    }
-
     protected function rowTax(float $netIncome, array $row): float
     {
         $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
@@ -101,22 +86,12 @@ class TaxCalculation
 
     public function clearData(): TaxCalculation
     {
-        foreach ($this->incomes as &$income) {
-            $income = [];
-        }
-
-        foreach ($this->deductions as &$deduction) {
-            $deduction = [];
-        }
+        $this->clearIncome();
+        $this->clearDeduction();
 
         $this->thaiYear = null;
         $this->netIncome = null;
 
         return $this;
-    }
-
-    public function import()
-    {
-        \Maatwebsite\Excel\Facades\Excel::import(new \Connectiv\ThaiTax\Imports\TaxImport(), 'src/Tables/2560.csv');
     }
 }

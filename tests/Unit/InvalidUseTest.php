@@ -18,14 +18,6 @@ class InvalidUseTest extends TestCase
         parent::tearDown();
     }
 
-    public function testWithoutThaiYear()
-    {
-        $this->expectException(Exception::class);
-
-        $tax = ThaiTax::netIncome(600000)
-            ->incomeTax();
-    }
-
     public function testWithoutNetIncome()
     {
         $this->expectException(Exception::class);

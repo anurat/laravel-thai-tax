@@ -20,6 +20,21 @@ trait IncomeTrait
             });
     }
 
+    protected function hasIncome(): bool
+    {
+        return collect($this->incomes)
+            ->contains(function ($income) {
+                return count($income) > 0;
+            });
+    }
+
+    protected function clearIncome(): void
+    {
+        foreach ($this->incomes as &$income) {
+            $income = [];
+        }
+    }
+
     public function income(float $income): TaxCalculation
     {
         $this->incomes['general'][] = $income;

@@ -23,10 +23,4 @@ class CreateFacadeTest extends TestCase
         $this->assertInstanceOf(TaxCalculation::class, ThaiTax::thaiYear(2564));
         $this->assertInstanceOf(TaxCalculation::class, ThaiTax::netIncome(600000));
     }
-
-    public function testExcelImport()
-    {
-        $this->markTestIncomplete('test excel import');
-        // ThaiTax::import();
-    }
 }

@@ -114,6 +114,60 @@ class DeductionTest extends TestCase
         $this->assertEquals(500, $thaiTax->incomeTax());
     }
 
+    public function testDisabilitiesDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->disabilities(2);
+
+        $this->assertEquals(3500, $thaiTax->incomeTax());
+    }
+
+    public function testCallingDisabilitiesDeductionTwice()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->disabilities(1)
+            ->disabilities(2);
+
+        $this->assertEquals(500, $thaiTax->incomeTax());
+    }
+
+    public function testChildBirthDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->childBirth(50000);
+
+        $this->assertEquals(7000, $thaiTax->incomeTax());
+    }
+
+    public function testMaxChildBirthDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->childBirth(60000);
+
+        $this->assertEquals(6500, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->childBirth(100000);
+
+        $this->assertEquals(6500, $thaiTax->incomeTax());
+    }
+
+    public function testCallingChildBirthDeductionTwice()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->childBirth(50000)
+            ->childBirth(50000);
+
+        $this->assertEquals(4500, $thaiTax->incomeTax());
+    }
+
     public function testInsurancePremiumDeduction()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
@@ -126,6 +180,13 @@ class DeductionTest extends TestCase
     public function testMaxInsurancePremiumDeduction()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->insurancePremium(100000);
+
+        $this->assertEquals(4500, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
             ->income(500000)
             ->insurancePremium(120000);
 
@@ -155,6 +216,13 @@ class DeductionTest extends TestCase
     {
         $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
+            ->annuityInsurancePremium(75000);
+
+        $this->assertEquals(5750, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
             ->annuityInsurancePremium(100000);
 
         $this->assertEquals(5750, $thaiTax->incomeTax());
@@ -163,6 +231,13 @@ class DeductionTest extends TestCase
     public function testMaxAnnuityInsurancePremiumDeduction()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(1500000)
+            ->annuityInsurancePremium(200000);
+
+        $this->assertEquals(150000, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
             ->income(1500000)
             ->annuityInsurancePremium(250000);
 
@@ -182,8 +257,184 @@ class DeductionTest extends TestCase
     {
         $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
+            ->homeLoanInterest(100000);
+
+        $this->assertEquals(4500, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
             ->homeLoanInterest(150000);
 
         $this->assertEquals(4500, $thaiTax->incomeTax());
+    }
+
+    public function testProvidentFundDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->providentFund(50000);
+
+        $this->assertEquals(7000, $thaiTax->incomeTax());
+    }
+
+    public function testMaxProvidentFundRateDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->providentFund(150000);
+
+        $this->assertEquals(5750, $thaiTax->incomeTax());
+    }
+
+    public function testMaxProvidentFundDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(10000000)
+            ->providentFund(500000);
+
+        $this->assertEquals(2784000, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(10000000)
+            ->providentFund(600000);
+
+        $this->assertEquals(2784000, $thaiTax->incomeTax());
+    }
+
+    public function testSocialSecurityDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->socialSecurity(5000);
+
+        $this->assertEquals(11000, $thaiTax->incomeTax());
+    }
+
+    public function testMaxSocialSecurityDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->socialSecurity(9000);
+
+        $this->assertEquals(10600, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->socialSecurity(10000);
+
+        $this->assertEquals(10600, $thaiTax->incomeTax());
+    }
+
+    public function testDonationDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->donation(30000);
+
+        $this->assertEquals(8500, $thaiTax->incomeTax());
+    }
+
+    public function testMaxDonationDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->donation(34000);
+
+        $this->assertEquals(8100, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->donation(50000);
+
+        $this->assertEquals(8100, $thaiTax->incomeTax());
+    }
+
+    public function testEducationDonationDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->educationDonation(10000);
+
+        $this->assertEquals(9500, $thaiTax->incomeTax());
+    }
+
+    public function testMaxEducationDonationDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->educationDonation(17000);
+
+        $this->assertEquals(8100, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->educationDonation(20000);
+
+        $this->assertEquals(8100, $thaiTax->incomeTax());
+    }
+
+    public function testPoliticalPartyDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->politicalParty(5000);
+
+        $this->assertEquals(11000, $thaiTax->incomeTax());
+    }
+
+    public function testMaxPoliticalPartyDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->politicalParty(10000);
+
+        $this->assertEquals(10500, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->politicalParty(20000);
+
+        $this->assertEquals(10500, $thaiTax->incomeTax());
+    }
+
+    public function testShopDeeMeeKeunDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->shopDeeMeeKeun(20000);
+
+        $this->assertEquals(9500, $thaiTax->incomeTax());
+    }
+
+    public function testMaxShopDeeMeeKeunDeduction()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->shopDeeMeeKeun(30000);
+
+        $this->assertEquals(8500, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::clearData()
+            ->thaiYear(2564)
+            ->income(500000)
+            ->shopDeeMeeKeun(40000);
+
+        $this->assertEquals(8500, $thaiTax->incomeTax());
+    }
+
+    public function testCallingShopDeeMeeKeunTwice()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(500000)
+            ->shopDeeMeeKeun(10000)
+            ->shopDeeMeeKeun(10000);
+
+        $this->assertEquals(9500, $thaiTax->incomeTax());
     }
 }

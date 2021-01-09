@@ -10,6 +10,8 @@ trait DeductionTrait
     public static $SPOUSE_DEDUCTION = 60000;
     public static $CHILD_DEDUCTION = 30000;
     public static $PARENT_DEDUCTION = 30000;
+    public static $DISABILITY_DEDUCTION = 60000;
+    public static $MAX_CHILD_BIRTH = 60000;
     public static $MAX_NO_OF_PARENTS = 4;
     public static $MAX_INSURANCE_PREMIUM = 100000;
     public static $ANNUITY_INSURANCE_PREMIUM_RATE = 0.15;
@@ -19,6 +21,9 @@ trait DeductionTrait
     public static $MAX_PROVIDENCE_FUND = 500000;
     public static $MAX_SOCIAL_SECURITY = 9000;
     public static $DONATION_RATE = 0.1;
+    public static $EDUCATION_DONATION_DEDUCTION_RATE = 2;
+    public static $MAX_POLITICAL_PARTY = 10000;
+    public static $MAX_SHOP_DEE_MEE_KUEN = 30000;
 
     private $deductions = [
         'general' => [],
@@ -26,13 +31,17 @@ trait DeductionTrait
         'spouse' => [],
         'children' => [],
         'parents' => [],
+        'disabilities' => [],
+        'childBirth' => [],
         'insurancePremium' => [],
         'annuityInsurancePremium' => [],
         'homeLoanInterest' => [],
         'providentFund' => [],
         'socialSecurity' => [],
-        'donations' => [],
-        'educationDonations' => [],
+        'donation' => [],
+        'educationDonation' => [],
+        'politicalParty' => [],
+        'shopDeeMeeKeun' => [],
     ];
 
     protected function deductionSum(): float
@@ -41,6 +50,21 @@ trait DeductionTrait
             ->sum(function ($deduction) {
                 return collect($deduction)->sum();
             });
+    }
+
+    protected function hasDeduction(): bool
+    {
+        return collect($this->deductions)
+            ->contains(function ($deduction) {
+                return count($deduction) > 0;
+            });
+    }
+
+    protected function clearDeduction(): void
+    {
+        foreach ($this->deductions as &$deduction) {
+            $deduction = [];
+        }
     }
 
     public function deduction(float $deduction): TaxCalculation
@@ -52,7 +76,7 @@ trait DeductionTrait
 
     public function spouse(bool $hasSpouse): TaxCalculation
     {
-        if ($hasSpouse && sizeof($this->deductions['spouse']) === 0) {
+        if ($hasSpouse && count($this->deductions['spouse']) === 0) {
             $this->deductions['spouse'][] = self::$SPOUSE_DEDUCTION;
         }
 
@@ -71,6 +95,21 @@ trait DeductionTrait
         $parentsSum = collect($this->deductions['parents'])->sum();
 
         $this->deductions['parents'][] = min($noOfParents, self::$MAX_NO_OF_PARENTS) * self::$PARENT_DEDUCTION;
+
+        return $this;
+    }
+
+    public function disabilities(int $noOfDisabilities): TaxCalculation
+    {
+        $this->deductions['children'][] = $noOfDisabilities * self::$DISABILITY_DEDUCTION;
+
+        return $this;
+    }
+
+    public function childBirth(float $cost): TaxCalculation
+    {
+
+        $this->deductions['childBirth'][] = min(self::$MAX_CHILD_BIRTH, $cost);
 
         return $this;
     }
@@ -121,6 +160,113 @@ trait DeductionTrait
             $sum + $interest >= self::$MAX_HOME_LOAN_INTEREST ?
             self::$MAX_HOME_LOAN_INTEREST - $sum :
             $interest);
+
+        return $this;
+    }
+
+    public function providentFund(float $fund): TaxCalculation
+    {
+        if (
+            $fund <= $this->incomeSum() * self::$PROVIDENT_FUND_RATE &&
+            $fund <= self::$MAX_PROVIDENCE_FUND
+        ) {
+            $this->deductions['providentFund'][] = $fund;
+        } else {
+            $this->deductions['providentFund'][] = min(
+                $this->incomeSum() * self::$PROVIDENT_FUND_RATE,
+                self::$MAX_PROVIDENCE_FUND
+            );
+        }
+
+        return $this;
+    }
+
+    public function socialSecurity(float $security): TaxCalculation
+    {
+        if (count($this->deductions['socialSecurity']) > 0) {
+            return $this;
+        }
+
+        $this->deductions['socialSecurity'][] = (
+            $security <= self::$MAX_SOCIAL_SECURITY ?
+            $security :
+            self::$MAX_SOCIAL_SECURITY);
+
+        return $this;
+    }
+
+    public function donation(float $donation): TaxCalculation
+    {
+        $this->calculateNetIncome();
+
+        $maxDonation = $this->netIncome * self::$DONATION_RATE;
+        $donationSum = $this->donationSum();
+        if ($donationSum >= $maxDonation) {
+            return $this;
+        }
+
+        $this->deductions['donation'][] = (
+            $donationSum + $donation >= $maxDonation ?
+            $maxDonation - $donationSum :
+            $donation);
+
+        return $this;
+    }
+
+    protected function donationSum(): float
+    {
+        return (collect($this->deductions['donation'])->sum() +
+            collect($this->deductions['educationDonation'])->sum());
+    }
+
+    public function educationDonation(float $donation): TaxCalculation
+    {
+        $this->calculateNetIncome();
+
+        $maxDonation = $this->netIncome * self::$DONATION_RATE;
+        $donationSum = $this->donationSum();
+        if ($donationSum >= $maxDonation) {
+            return $this;
+        }
+
+        $this->deductions['educationdonation'][] = (
+            $donationSum + ($donation * self::$EDUCATION_DONATION_DEDUCTION_RATE) >= $maxDonation ?
+            $maxDonation - $donationSum :
+            $donation * self::$EDUCATION_DONATION_DEDUCTION_RATE);
+
+        return $this;
+    }
+
+    public function politicalParty(float $donation): TaxCalculation
+    {
+        $sum = collect($this->deductions['politicalParty'])->sum();
+        if ($sum >= self::$MAX_PROVIDENCE_FUND) {
+            return $this;
+        }
+
+        $this->deductions['politicalParty'][] = (
+            $sum + $donation >= self::$MAX_POLITICAL_PARTY ?
+            self::$MAX_POLITICAL_PARTY - $sum :
+            $donation);
+
+        return $this;
+    }
+
+    public function shopDeeMeeKeun(float $shop): TaxCalculation
+    {
+        $sum = collect($this->deductions['shopDeeMeeKeun'])->sum();
+
+        if (
+            $sum >= self::$MAX_SHOP_DEE_MEE_KUEN ||
+            $this->thaiYear !== 2564
+        ) {
+            return $this;
+        }
+
+        $this->deductions['shopDeeMeeKeun'][] = (
+            $sum + $shop >= self::$MAX_SHOP_DEE_MEE_KUEN ?
+            self::$MAX_SHOP_DEE_MEE_KUEN - $sum :
+            $shop);
 
         return $this;
     }
