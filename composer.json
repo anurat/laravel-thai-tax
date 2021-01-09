@@ -30,7 +30,7 @@
         }
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=7",
         "laravel/framework": ">=7"
     },
     "require-dev": {
