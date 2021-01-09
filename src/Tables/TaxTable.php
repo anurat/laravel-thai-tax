@@ -7,14 +7,14 @@ use Illuminate\Support\Collection;
 class TaxTable
 {
     public const START_YEAR = 2542;
-    public const TAX2542_TABLE = 'src/Tables/2542.csv';
-    public const TAX2552_TABLE = 'src/Tables/2552.csv';
-    public const TAX2560_TABLE = 'src/Tables/2560.csv';
+    public const TAX2542_TABLE = '/2542.csv';
+    public const TAX2552_TABLE = '/2552.csv';
+    public const TAX2560_TABLE = '/2560.csv';
 
     public static function tableFromYear(int $thaiYear): Collection
     {
         $tableFilename = self::getTableFilename($thaiYear);
-        $table = file_get_contents($tableFilename);
+        $table = file_get_contents(__DIR__ . $tableFilename);
 
         return collect(explode("\r\n", $table))
             ->map(function ($row) {
