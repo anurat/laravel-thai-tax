@@ -23,10 +23,8 @@
         "laravel": {
             "providers": [
                 "Connectiv\\ThaiTax\\ThaiTaxServiceProvider",
-                "Maatwebsite\\Excel\\ExcelServiceProvider"
             ],
             "aliases": {
-                "Excel": "Maatwebsite\\Excel\\Facades\\Excel",
                 "ThaiTax": "Connectiv\\ThaiTax\\Facades\\ThaiTax"
             }
         }
