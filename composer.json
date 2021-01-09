@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Connectiv\\ThaiTax\\ThaiTaxServiceProvider",
+                "Connectiv\\ThaiTax\\ThaiTaxServiceProvider"
             ],
             "aliases": {
                 "ThaiTax": "Connectiv\\ThaiTax\\Facades\\ThaiTax"
