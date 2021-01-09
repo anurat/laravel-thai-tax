@@ -1,5 +1,5 @@
 {
-    "name": "connectiv/thai_tax",
+    "name": "anurat/laravel-thai-tax",
     "description": "Thai tax calculation",
     "type": "library",
     "license": "MIT",
@@ -11,21 +11,21 @@
     ],
     "autoload": {
         "psr-4": {
-            "Connectiv\\ThaiTax\\": "src"
+            "Anurat\\ThaiTax\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Connectiv\\ThaiTax\\Tests\\": "tests"
+            "Anurat\\ThaiTax\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Connectiv\\ThaiTax\\ThaiTaxServiceProvider"
+                "Anurat\\ThaiTax\\ThaiTaxServiceProvider"
             ],
             "aliases": {
-                "ThaiTax": "Connectiv\\ThaiTax\\Facades\\ThaiTax"
+                "ThaiTax": "Anurat\\ThaiTax\\Facades\\ThaiTax"
             }
         }
     },

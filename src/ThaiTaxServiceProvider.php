@@ -1,8 +1,8 @@
 <?php
 
-namespace Connectiv\ThaiTax;
+namespace Anurat\ThaiTax;
 
-use Connectiv\ThaiTax\TaxCalculation;
+use Anurat\ThaiTax\TaxCalculation;
 use Illuminate\Support\ServiceProvider;
 
 class ThaiTaxServiceProvider extends ServiceProvider

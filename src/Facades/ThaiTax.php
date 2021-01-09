@@ -1,6 +1,6 @@
 <?php
 
-namespace Connectiv\ThaiTax\Facades;
+namespace Anurat\ThaiTax\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

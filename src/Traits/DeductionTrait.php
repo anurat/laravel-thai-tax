@@ -1,8 +1,8 @@
 <?php
 
-namespace Connectiv\ThaiTax\Traits;
+namespace Anurat\ThaiTax\Traits;
 
-use Connectiv\ThaiTax\TaxCalculation;
+use Anurat\ThaiTax\TaxCalculation;
 
 trait DeductionTrait
 {

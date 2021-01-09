@@ -1,11 +1,11 @@
 <?php
 
-namespace Connectiv\ThaiTax;
+namespace Anurat\ThaiTax;
 
-use Connectiv\ThaiTax\Tables\TaxTable;
-use Connectiv\ThaiTax\Traits\DeductionTrait;
-use Connectiv\ThaiTax\Traits\ExpenseTrait;
-use Connectiv\ThaiTax\Traits\IncomeTrait;
+use Anurat\ThaiTax\Tables\TaxTable;
+use Anurat\ThaiTax\Traits\DeductionTrait;
+use Anurat\ThaiTax\Traits\ExpenseTrait;
+use Anurat\ThaiTax\Traits\IncomeTrait;
 use Exception;
 
 class TaxCalculation

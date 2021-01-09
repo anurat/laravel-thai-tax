@@ -1,8 +1,8 @@
 <?php
 
-namespace Connectiv\ThaiTax\Tests;
+namespace Anurat\ThaiTax\Tests;
 
-use Connectiv\ThaiTax\ThaiTaxServiceProvider;
+use Anurat\ThaiTax\ThaiTaxServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchesTraTestCase

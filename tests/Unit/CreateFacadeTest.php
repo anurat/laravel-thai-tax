@@ -1,10 +1,10 @@
 <?php
 
-namespace Connectiv\ThaiTax\Tests\Unit;
+namespace Anurat\ThaiTax\Tests\Unit;
 
-use Connectiv\ThaiTax\Facades\ThaiTax;
-use Connectiv\ThaiTax\TaxCalculation;
-use Connectiv\ThaiTax\Tests\TestCase;
+use Anurat\ThaiTax\Facades\ThaiTax;
+use Anurat\ThaiTax\TaxCalculation;
+use Anurat\ThaiTax\Tests\TestCase;
 
 class CreateFacadeTest extends TestCase
 {

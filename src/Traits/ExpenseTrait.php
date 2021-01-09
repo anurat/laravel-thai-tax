@@ -1,6 +1,6 @@
 <?php
 
-namespace Connectiv\ThaiTax\Traits;
+namespace Anurat\ThaiTax\Traits;
 
 trait ExpenseTrait
 {

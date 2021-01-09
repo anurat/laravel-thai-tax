@@ -1,9 +1,9 @@
 <?php
 
-namespace Connectiv\ThaiTax\Tests\Unit;
+namespace Anurat\ThaiTax\Tests\Unit;
 
-use Connectiv\ThaiTax\Facades\ThaiTax;
-use Connectiv\ThaiTax\Tests\TestCase;
+use Anurat\ThaiTax\Facades\ThaiTax;
+use Anurat\ThaiTax\Tests\TestCase;
 
 class ThaiYear2560Test extends TestCase
 {

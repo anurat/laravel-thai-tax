@@ -1,6 +1,6 @@
 <?php
 
-namespace Connectiv\ThaiTax\Tables;
+namespace Anurat\ThaiTax\Tables;
 
 use Illuminate\Support\Collection;
 
