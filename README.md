@@ -48,7 +48,7 @@ so incomes and deductions can be provided instead of net income.
 
 #### Income
 
-`income(float $income)` can be used for general type of incomes, and  
+`income(float $income)` can be used for general type of incomes
 
 ```php
 ThaiTax::thaiYear(2564)
@@ -84,7 +84,10 @@ ThaiTax::thaiYear(2564)
 // 4500 THB    
 ```
 
-Other deduction types are as follow.
+Other deduction types are as follow.  
+It has the benefit of checking for specific rules for that type  
+e.g. home loan interest may not exceed 100,000 Baht,  
+it will automatically reduce to 100,000 Baht if more is provided.
 
 `spouse(bool $hasSpouse)` // คู่สมรส
 
