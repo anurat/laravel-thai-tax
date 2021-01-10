@@ -38,10 +38,15 @@ ThaiTax::thaiYear(2542)
 
 > The earliest year it can calculate is 2542
 
-### Income
+### Incomes and Deductions
 
 Net income can be calculated by using incomes and deductions,  
 so incomes and deductions can be provided instead of net income.
+
+> `netIncome()` and (all types or incomes and deductions) should not be used together,
+> as they will override the other.
+
+#### Income
 
 `income(float $income)` can be used for general type of incomes, and  
 
@@ -67,8 +72,57 @@ ThaiTax::thaiYear(2564)
 
 > salary() takes monthly salary as an argument so 50,000 will be 600,000 per year.
 
-### Deduction
+#### Deduction
+
+For general type of deductions `deduction()` can be used.
+
+```php
+ThaiTax::thaiYear(2564)
+    ->income(500000)
+    ->deduction(100000)
+    ->incomeTax();
+// 4500 THB    
+```
+
+Other deduction types are as follow.
+
+`spouse(bool $hasSpouse)` // คู่สมรส
+
+`children(int $noOfChildren)` // บุตร
+
+`parents(int $noOfParents)` // บิดามารดา
+
+`disabiltites(int $NoOfDisabilities)` // ผู้พิการ/ทุพพลภาพ
+
+`childBirth(float $cost)` // ฝากครรภ์และทำคลอด
+
+`insurancePremium(float $premium)` // ประกันชีวิต
+
+`annuityInsurancePremium(float $premium)` // ประกันชีวิตแบบบำนาญ
+
+`homeLoanInterest(float $interest)` // ดอกเบี้ยซื้อที่อยู่อาศัย
+
+`providentFund(float $fund)` // กองทุนสำรองเลี้ยงชีพ
+
+`socialSecurity(float $security)` // ประกันสังคม
+
+`donation(float $donation)` // บริจาค
+
+`educationDonation(float $donation)` // บริจาคเพื่อการศึกษา/กีฬา
+
+`politicalParty(float $donation)` // บริจาคพรรคการเมือง
+
+`shopDeeMeeKeun(float $shop)` // ช๊อปดีมีคืน
 
 
 
-
+```php
+ThaiTax::thaiYear(2564)
+    ->income(1000000)
+    ->spouse(true)
+    ->children(2)
+    ->parents(3)
+    ->insurancePremium(50000)
+    ->incomeTax();
+// 39500 THB    
+```
