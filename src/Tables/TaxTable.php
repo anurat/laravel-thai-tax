@@ -7,14 +7,27 @@ use Illuminate\Support\Collection;
 class TaxTable
 {
     public const START_YEAR = 2542;
-    public const TAX2542_TABLE = '/2542.csv';
-    public const TAX2552_TABLE = '/2552.csv';
-    public const TAX2560_TABLE = '/2560.csv';
+    public const TAX2542_TABLE = '2542.csv';
+    public const TAX2552_TABLE = '2552.csv';
+    public const TAX2560_TABLE = '2560.csv';
 
-    public static function tableFromYear(int $thaiYear): Collection
+    public static function calculateTax(int $thaiYear, float $netIncome): float
+    {
+        $table = TaxTable::tableFromYear($thaiYear);
+
+        return $table->sum(function ($row) use ($netIncome) {
+            if ($row['min'] > $netIncome) {
+                return 0;
+            }
+
+            return self::taxInOneRow($netIncome, $row);
+        });
+    }
+
+    protected static function tableFromYear(int $thaiYear): Collection
     {
         $tableFilename = self::getTableFilename($thaiYear);
-        $table = file_get_contents(__DIR__ . $tableFilename);
+        $table = file_get_contents(__DIR__ . '/' . $tableFilename);
 
         return collect(explode("\r\n", $table))
             ->map(function ($row) {
@@ -40,5 +53,12 @@ class TaxTable
         }
 
         return self::TAX2560_TABLE;
+    }
+
+    protected static function taxInOneRow(float $netIncome, array $row): float
+    {
+        $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
+
+        return ($minOfMax - $row['min'] + 1) * $row['percentage'] / 100;
     }
 }

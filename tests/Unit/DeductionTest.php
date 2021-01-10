@@ -150,8 +150,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(6500, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->childBirth(100000);
 
@@ -185,8 +184,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(4500, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->insurancePremium(120000);
 
@@ -220,8 +218,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(5750, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->annuityInsurancePremium(100000);
 
@@ -236,8 +233,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(150000, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(1500000)
             ->annuityInsurancePremium(250000);
 
@@ -261,8 +257,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(4500, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->homeLoanInterest(150000);
 
@@ -295,8 +290,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(2784000, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(10000000)
             ->providentFund(600000);
 
@@ -320,8 +314,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(10600, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->socialSecurity(10000);
 
@@ -345,8 +338,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(8100, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->donation(50000);
 
@@ -370,8 +362,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(8100, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->educationDonation(20000);
 
@@ -395,8 +386,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(10500, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->politicalParty(20000);
 
@@ -420,8 +410,7 @@ class DeductionTest extends TestCase
 
         $this->assertEquals(8500, $thaiTax->incomeTax());
 
-        $thaiTax = ThaiTax::clearData()
-            ->thaiYear(2564)
+        $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000)
             ->shopDeeMeeKeun(40000);
 
