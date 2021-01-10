@@ -52,7 +52,7 @@ Net income can be calculated by using incomes and deductions,
 so incomes and deductions can be provided instead of net income.
 
 > `netIncome()` and (all types or incomes and deductions) should not be used together,
-> as they will override the other.
+> as they will override each other.
 
 #### Income
 
