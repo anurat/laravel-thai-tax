@@ -33,7 +33,6 @@ class IncomeTest extends TestCase
 
         $this->assertEquals(0, $tax);
 
-        ThaiTax::clearData();
         $tax = ThaiTax::thaiYear(2564)
             ->income(320000)
             ->incomeTax();

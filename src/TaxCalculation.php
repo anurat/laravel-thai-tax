@@ -65,26 +65,14 @@ class TaxCalculation
             throw new Exception('Net income are not specified.');
         }
 
-        $table = TaxTable::tableFromYear($this->thaiYear);
-        $netIncome = $this->netIncome;
+        $tax = TaxTable::calculateTax($this->thaiYear, $this->netIncome);
 
-        return $table->sum(function ($row) use ($netIncome) {
-            if ($row['min'] > $netIncome) {
-                return 0;
-            }
+        $this->clearData();
 
-            return $this->rowTax($netIncome, $row);
-        });
+        return $tax;
     }
 
-    protected function rowTax(float $netIncome, array $row): float
-    {
-        $minOfMax = $row['max'] === 'MAX' ? $netIncome : min($row['max'], $netIncome);
-
-        return ($minOfMax - $row['min'] + 1) * $row['percentage'] / 100;
-    }
-
-    public function clearData(): TaxCalculation
+    protected function clearData(): TaxCalculation
     {
         $this->clearIncome();
         $this->clearDeduction();
