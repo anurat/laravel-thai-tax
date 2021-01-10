@@ -4,8 +4,16 @@ This Laravel package allows you to calculate personal income tax according to Th
 
 ## Installation
 
+Tested on Laravel 8 but should be working on any version of Laravel.
+
 ```
 composer require anurat/laravel-thai-tax
+```
+
+After installed, it can be used through facade.
+
+```
+use ThaiTax;
 ```
 
 ## Usage
