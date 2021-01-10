@@ -36,10 +36,39 @@ ThaiTax::thaiYear(2542)
 // 42500 THB
 ```
 
-> The earliest year you can use is 2542
+> The earliest year it can calculate is 2542
 
-### Income and deduction
+### Income
+
+Net income can be calculated by using incomes and deductions,  
+so incomes and deductions can be provided instead of net income.
+
+`income(float $income)` can be used for general type of incomes, and  
+
+```php
+ThaiTax::thaiYear(2564)
+    ->income(250000)
+    ->income(50000)
+    ->income(15000)
+    ->incomeTax();
+// 250 THB    
+```
+
+Also you can use more specific type of incomes  
+e.g. `salary(float $salaryPerMonth)` or `bonus(float $bonus)`.
+
+```php
+ThaiTax::thaiYear(2564)
+    ->income(100000)
+    ->salary(50000)
+    ->bonus(50000);
+// 41000 THB    
+```
+
+> salary() takes monthly salary as an argument so 50,000 will be 600,000 per year.
+
+### Deduction
 
 
-### clearData
+
 
