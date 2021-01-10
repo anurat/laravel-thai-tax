@@ -95,7 +95,7 @@ it will automatically reduce to 100,000 Baht if more is provided.
 
 `parents(int $noOfParents)` // บิดามารดา
 
-`disabiltites(int $NoOfDisabilities)` // ผู้พิการ/ทุพพลภาพ
+`disabiltites(int $noOfDisabilities)` // ผู้พิการ/ทุพพลภาพ
 
 `childBirth(float $cost)` // ฝากครรภ์และทำคลอด
 
