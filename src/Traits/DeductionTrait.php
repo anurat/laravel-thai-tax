@@ -67,11 +67,36 @@ trait DeductionTrait
         }
     }
 
-    public function deduction(float $deduction): TaxCalculation
+    /**
+     * @param  array|float  $deduction
+     */
+    public function deduction($deduction): TaxCalculation
     {
-        $this->deductions['general'][] = $deduction;
+        if (is_array($deduction)) {
+            $this->addDeductions($deduction);
 
-        return $this;
+            return $this;
+        }
+
+        if (is_numeric($deduction)) {
+            $this->deductions['general'][] = (float) $deduction;
+
+            return $this;
+        }
+
+        throw new Exception('Deduction is neither an array nor number.');
+    }
+
+    protected function addDeductions(array $deductions): void
+    {
+        foreach ($deductions as $type => $deduction) {
+            if (array_key_exists($type, $this->deductions)) {
+                $this->$type($deduction);
+                continue;
+            }
+
+            $this->deductions['general'][] = $deduction;
+        }
     }
 
     public function spouse(bool $hasSpouse): TaxCalculation

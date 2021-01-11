@@ -36,11 +36,36 @@ trait IncomeTrait
         }
     }
 
-    public function income(float $income): TaxCalculation
+    /**
+     * @param  float|array  $income
+     */
+    public function income($income): TaxCalculation
     {
-        $this->incomes['general'][] = $income;
+        if (is_array($income)) {
+            $this->addIncomes($income);
 
-        return $this;
+            return $this;
+        }
+
+        if (is_numeric($income)) {
+            $this->incomes['general'][] = (float) $income;
+
+            return $this;
+        }
+
+        throw new Exception('Income is neither an array nor number.');
+    }
+
+    protected function addIncomes(array $incomes): void
+    {
+        foreach ($incomes as $type => $income) {
+            if (array_key_exists($type, $this->incomes)) {
+                $this->$type($income);
+                continue;
+            }
+
+            $this->incomes['general'][] = $income;
+        }
     }
 
     public function salary(float $salaryPerMonth): TaxCalculation

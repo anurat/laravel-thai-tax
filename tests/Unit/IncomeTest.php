@@ -49,4 +49,22 @@ class IncomeTest extends TestCase
 
         $this->assertSame(41000.0, $thaiTax->incomeTax());
     }
+
+    public function testAddIncomeArray()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income([250000, 50000, 15000]);
+
+        $this->assertSame(250.0, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income([
+                50000,
+                50000,
+                'salary' => 50000,
+                'bonus' => 50000,
+            ]);
+
+        $this->assertSame(41000.0, $thaiTax->incomeTax());
+    }
 }
