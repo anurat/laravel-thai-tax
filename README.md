@@ -162,7 +162,8 @@ ThaiTax::thaiYear(2564)
         'spouse' => true,
         'children' => 2,
         'parents' => 3,
-        'insurancePremium' => 50000,
+        'insurancePremium' => 50000
+    ])
     ->incomeTax();
 // 39500 THB    
 ```
