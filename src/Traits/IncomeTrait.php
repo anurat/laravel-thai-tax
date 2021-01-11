@@ -6,7 +6,7 @@ use Anurat\ThaiTax\TaxCalculation;
 
 trait IncomeTrait
 {
-    protected $NO_OF_MONTHS = 12;
+    protected static $NO_OF_MONTHS = 12;
 
     private $incomes = [
         'general' => [],
