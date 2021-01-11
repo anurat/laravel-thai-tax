@@ -7,13 +7,13 @@ use Illuminate\Support\Collection;
 class TaxTable
 {
     public const START_YEAR = 2542;
-    public const TAX2542_TABLE = '2542.csv';
-    public const TAX2552_TABLE = '2552.csv';
-    public const TAX2560_TABLE = '2560.csv';
+    public const TAX2542_TABLE = '2542.php';
+    public const TAX2552_TABLE = '2552.php';
+    public const TAX2560_TABLE = '2560.php';
 
     public static function calculateTax(int $thaiYear, float $netIncome): float
     {
-        $table = TaxTable::tableFromYear($thaiYear);
+        $table = self::tableFromYear($thaiYear);
 
         return $table->sum(function ($row) use ($netIncome) {
             if ($row['min'] > $netIncome) {
@@ -27,19 +27,9 @@ class TaxTable
     protected static function tableFromYear(int $thaiYear): Collection
     {
         $tableFilename = self::getTableFilename($thaiYear);
-        $table = file_get_contents(__DIR__ . '/' . $tableFilename);
+        $table = include __DIR__ . '/' . $tableFilename;
 
-        return collect(explode("\r\n", $table))
-            ->map(function ($row) {
-                $r = explode(",", $row);
-
-                return [
-                    'min' => $r[0],
-                    'max' => $r[1],
-                    'percentage' => $r[2],
-                ];
-            })
-            ->slice(1);
+        return collect($table);
     }
 
     protected static function getTableFilename(int $thaiYear): string
