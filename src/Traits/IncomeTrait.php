@@ -8,7 +8,7 @@ trait IncomeTrait
 {
     protected static $NO_OF_MONTHS = 12;
 
-    private $incomes = [
+    protected $incomes = [
         'general' => [],
         'salary' => [],
         'bonus' => [],

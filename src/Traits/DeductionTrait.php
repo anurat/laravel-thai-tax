@@ -6,27 +6,27 @@ use Anurat\ThaiTax\TaxCalculation;
 
 trait DeductionTrait
 {
-    public static $PERSONAL_DEDUCTION = 60000;
-    public static $SPOUSE_DEDUCTION = 60000;
-    public static $CHILD_DEDUCTION = 30000;
-    public static $PARENT_DEDUCTION = 30000;
-    public static $DISABILITY_DEDUCTION = 60000;
-    public static $MAX_CHILD_BIRTH = 60000;
-    public static $MAX_NO_OF_PARENTS = 4;
-    public static $MAX_INSURANCE_PREMIUM = 100000;
-    public static $ANNUITY_INSURANCE_PREMIUM_RATE = 0.15;
-    public static $MAX_ANNUITY_INSURANCE_PREMIUM = 200000;
-    public static $MAX_HOME_LOAN_INTEREST = 100000;
-    public static $PROVIDENT_FUND_RATE = 0.15;
-    public static $MAX_PROVIDENCE_FUND = 500000;
-    public static $MAX_SOCIAL_SECURITY = 9000;
-    public static $DONATION_RATE = 0.1;
-    public static $EDUCATION_DONATION_DEDUCTION_RATE = 2;
-    public static $MAX_POLITICAL_PARTY = 10000;
-    public static $MAX_SHOP_DEE_MEE_KUEN = 30000;
-    public static $SHOP_DEE_MEE_KUEN_YEAR = 2564;
+    protected static $PERSONAL_DEDUCTION = 60000;
+    protected static $SPOUSE_DEDUCTION = 60000;
+    protected static $CHILD_DEDUCTION = 30000;
+    protected static $PARENT_DEDUCTION = 30000;
+    protected static $DISABILITY_DEDUCTION = 60000;
+    protected static $MAX_CHILD_BIRTH = 60000;
+    protected static $MAX_NO_OF_PARENTS = 4;
+    protected static $MAX_INSURANCE_PREMIUM = 100000;
+    protected static $ANNUITY_INSURANCE_PREMIUM_RATE = 0.15;
+    protected static $MAX_ANNUITY_INSURANCE_PREMIUM = 200000;
+    protected static $MAX_HOME_LOAN_INTEREST = 100000;
+    protected static $PROVIDENT_FUND_RATE = 0.15;
+    protected static $MAX_PROVIDENCE_FUND = 500000;
+    protected static $MAX_SOCIAL_SECURITY = 9000;
+    protected static $DONATION_RATE = 0.1;
+    protected static $EDUCATION_DONATION_DEDUCTION_RATE = 2;
+    protected static $MAX_POLITICAL_PARTY = 10000;
+    protected static $MAX_SHOP_DEE_MEE_KUEN = 30000;
+    protected static $SHOP_DEE_MEE_KUEN_YEAR = 2564;
 
-    private $deductions = [
+    protected $deductions = [
         'general' => [],
         'personal' => [],
         'spouse' => [],
