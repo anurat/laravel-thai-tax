@@ -14,6 +14,8 @@ class TaxCalculation
     use DeductionTrait;
     use ExpenseTrait;
 
+    public const THAI_YEAR_DIFFERENCE = 543;
+
     private $thaiYear;
     private $netIncome;
 
@@ -54,7 +56,7 @@ class TaxCalculation
     public function incomeTax(): float
     {
         if (!$this->thaiYear) {
-            $this->thaiYear = date('Y') + 543;
+            $this->thaiYear = date('Y') + self::THAI_YEAR_DIFFERENCE;
         }
 
         if ($this->hasIncome() || $this->hasDeduction()) {

@@ -24,6 +24,7 @@ trait DeductionTrait
     public static $EDUCATION_DONATION_DEDUCTION_RATE = 2;
     public static $MAX_POLITICAL_PARTY = 10000;
     public static $MAX_SHOP_DEE_MEE_KUEN = 30000;
+    public static $SHOP_DEE_MEE_KUEN_YEAR = 2564;
 
     private $deductions = [
         'general' => [],
@@ -258,7 +259,7 @@ trait DeductionTrait
 
         if (
             $sum >= self::$MAX_SHOP_DEE_MEE_KUEN ||
-            $this->thaiYear !== 2564
+            $this->thaiYear !== self::$SHOP_DEE_MEE_KUEN_YEAR
         ) {
             return $this;
         }
@@ -273,7 +274,7 @@ trait DeductionTrait
 
     protected function addPersonalDeduction(): void
     {
-        if (sizeof($this->deductions['personal']) === 0) {
+        if (count($this->deductions['personal']) === 0) {
             $this->deductions['personal'][] = self::$PERSONAL_DEDUCTION;
         }
     }

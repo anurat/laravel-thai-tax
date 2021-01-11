@@ -6,6 +6,8 @@ use Anurat\ThaiTax\TaxCalculation;
 
 trait IncomeTrait
 {
+    protected $NO_OF_MONTHS = 12;
+
     private $incomes = [
         'general' => [],
         'salary' => [],
@@ -44,7 +46,7 @@ trait IncomeTrait
 
     public function salary(float $salaryPerMonth): TaxCalculation
     {
-        $this->incomes['salary'][] = $salaryPerMonth * 12;
+        $this->incomes['salary'][] = $salaryPerMonth * self::$NO_OF_MONTHS;
 
         return $this;
     }
