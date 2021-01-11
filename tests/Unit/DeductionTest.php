@@ -39,6 +39,26 @@ class DeductionTest extends TestCase
         $this->assertSame(39500.0, $thaiTax->incomeTax());
     }
 
+    public function testAddDeductionArray()
+    {
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(1000000)
+            ->deduction([100000, 200000, 300000]);
+
+        $this->assertSame(4500.0, $thaiTax->incomeTax());
+
+        $thaiTax = ThaiTax::thaiYear(2564)
+            ->income(1000000)
+            ->deduction([
+                'spouse' => true,
+                'children' => 2,
+                'parents' => 3,
+                'insurancePremium' => 50000,
+            ]);
+
+        $this->assertSame(39500.0, $thaiTax->incomeTax());
+    }
+
     public function testNoDeduction()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
