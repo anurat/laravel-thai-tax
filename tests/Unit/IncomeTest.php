@@ -7,22 +7,12 @@ use Anurat\ThaiTax\Tests\TestCase;
 
 class IncomeTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testAddIncome()
     {
         $thaiTax = ThaiTax::thaiYear(2564)
             ->income(500000);
 
-        $this->assertEquals(11500, $thaiTax->incomeTax());
+        $this->assertSame(11500.0, $thaiTax->incomeTax());
     }
 
     public function testAddLowIncome()
@@ -31,13 +21,13 @@ class IncomeTest extends TestCase
             ->income(310000)
             ->incomeTax();
 
-        $this->assertEquals(0, $tax);
+        $this->assertSame(0.0, $tax);
 
         $tax = ThaiTax::thaiYear(2564)
             ->income(320000)
             ->incomeTax();
 
-        $this->assertEquals(500, $tax);
+        $this->assertSame(500.0, $tax);
     }
 
     public function testAddMultipleIncomes()
@@ -47,7 +37,7 @@ class IncomeTest extends TestCase
             ->income(50000)
             ->income(15000);
 
-        $this->assertEquals(250, $thaiTax->incomeTax());
+        $this->assertSame(250.0, $thaiTax->incomeTax());
     }
 
     public function testAddDifferentTypesOfIncomes()
@@ -57,6 +47,6 @@ class IncomeTest extends TestCase
             ->salary(50000)
             ->bonus(50000);
 
-        $this->assertEquals(41000, $thaiTax->incomeTax());
+        $this->assertSame(41000.0, $thaiTax->incomeTax());
     }
 }

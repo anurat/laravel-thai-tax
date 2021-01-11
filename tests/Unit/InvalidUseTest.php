@@ -8,16 +8,6 @@ use Exception;
 
 class InvalidUseTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testWithoutNetIncome()
     {
         $this->expectException(Exception::class);
