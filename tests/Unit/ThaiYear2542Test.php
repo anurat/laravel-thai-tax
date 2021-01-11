@@ -22,7 +22,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2542(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2542)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2542)->netIncome($netIncome)->incomeTax());
     }
 
     public function provideNetIncomeData(): array
@@ -48,7 +48,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2543(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2543)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2543)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -56,7 +56,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2544(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2544)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2544)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -64,7 +64,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2545(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2545)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2545)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -72,7 +72,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2546(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2546)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2546)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -80,7 +80,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2547(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2547)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2547)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -88,7 +88,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2548(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2548)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2548)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -96,7 +96,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2549(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2549)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2549)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -104,7 +104,7 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2550(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2550)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2550)->netIncome($netIncome)->incomeTax());
     }
 
     /**
@@ -112,6 +112,6 @@ class ThaiYear2542Test extends TestCase
      */
     public function testYear2551(float $expectedResult, float $netIncome): void
     {
-        $this->assertEquals($expectedResult, ThaiTax::thaiYear(2551)->netIncome($netIncome)->incomeTax());
+        $this->assertSame($expectedResult, ThaiTax::thaiYear(2551)->netIncome($netIncome)->incomeTax());
     }
 }

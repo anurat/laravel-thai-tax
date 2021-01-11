@@ -8,16 +8,6 @@ use Anurat\ThaiTax\Tests\TestCase;
 
 class CreateFacadeTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testCreateFacade()
     {
         $this->assertInstanceOf(TaxCalculation::class, ThaiTax::thaiYear(2564));
