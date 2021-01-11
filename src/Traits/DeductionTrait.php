@@ -48,9 +48,8 @@ trait DeductionTrait
     protected function deductionSum(): float
     {
         return collect($this->deductions)
-            ->sum(function ($deduction) {
-                return collect($deduction)->sum();
-            });
+            ->flatten()
+            ->sum();
     }
 
     protected function hasDeduction(): bool

@@ -17,9 +17,8 @@ trait IncomeTrait
     protected function incomeSum(): float
     {
         return collect($this->incomes)
-            ->sum(function ($income) {
-                return collect($income)->sum();
-            });
+            ->flatten()
+            ->sum();
     }
 
     protected function hasIncome(): bool
