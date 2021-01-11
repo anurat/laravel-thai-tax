@@ -74,11 +74,26 @@ e.g. `salary(float $salaryPerMonth)` or `bonus(float $bonus)`.
 ThaiTax::thaiYear(2564)
     ->income(100000)
     ->salary(50000)
-    ->bonus(50000);
+    ->bonus(50000)
+    ->incomeTax();
+// 41000 THB    
+```
+> salary() takes monthly salary as an argument so 50,000 will be 600,000 per year.
+
+`income(array $incomes)` can also accept an array as an argument.
+
+```php
+ThaiTax::thaiYear(2564)
+    ->income([
+        50000,
+        50000,
+        'salary' => 50000,
+        'bonus' => 50000
+    ])
+    ->incomeTax();
 // 41000 THB    
 ```
 
-> salary() takes monthly salary as an argument so 50,000 will be 600,000 per year.
 
 #### Deduction
 
@@ -134,6 +149,20 @@ ThaiTax::thaiYear(2564)
     ->children(2)
     ->parents(3)
     ->insurancePremium(50000)
+    ->incomeTax();
+// 39500 THB    
+```
+
+`deduction()` can also accept an array as an argument.
+
+```php
+ThaiTax::thaiYear(2564)
+    ->income(1000000)
+    ->deduction([
+        'spouse' => true,
+        'children' => 2,
+        'parents' => 3,
+        'insurancePremium' => 50000,
     ->incomeTax();
 // 39500 THB    
 ```
